@@ -7,7 +7,8 @@ import "./App.css";
 
 // For local testing: http://localhost:3000
 // For production: set VITE_SOCKET_URL environment variable or replace with your deployed URL
-const SOCKET_URL = import.meta.env.VITE_SOCKET_URL || "https://inboxkit-assignment.onrender.com";
+const SOCKET_URL =
+  import.meta.env.VITE_SOCKET_URL || "https://inboxkit-assignment.onrender.com";
 
 function App() {
   const [socket, setSocket] = useState(null);

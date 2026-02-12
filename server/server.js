@@ -13,7 +13,7 @@ app.get("/", (req, res) => {
     message: "WebSocket server for Grid Capture game",
     connections: users.size,
     gridSize: GRID_SIZE,
-    instructions: "Open http://localhost:5173 to play the game"
+    instructions: "Open http://localhost:5173 to play the game",
   });
 });
 
@@ -24,21 +24,45 @@ app.get("/health", (req, res) => {
 const httpServer = createServer(app);
 
 // Allow both local development and production origins
-const allowedOrigins = process.env.ALLOWED_ORIGINS 
-  ? process.env.ALLOWED_ORIGINS.split(',')
+const allowedOrigins = process.env.ALLOWED_ORIGINS
+  ? process.env.ALLOWED_ORIGINS.split(",")
   : [
-      "http://localhost:5173", 
+      "http://localhost:5173",
       "http://127.0.0.1:5173",
       "https://inboxkit-assignment.onrender.com",
       "https://inboxkit-assignment.vercel.app",
-      "https://inboxkit-assignment.netlify.app"
+      "https://inboxkit-assignment.netlify.app",
     ];
+
+// Function to check if origin is allowed
+const checkOrigin = (origin, callback) => {
+  // Allow requests with no origin (like mobile apps, Postman, etc.)
+  if (!origin) return callback(null, true);
+
+  // Check if origin is in allowed list
+  if (allowedOrigins.includes(origin)) {
+    return callback(null, true);
+  }
+
+  // Allow all Vercel preview and production deployments
+  if (origin.match(/^https:\/\/.*\.vercel\.app$/)) {
+    return callback(null, true);
+  }
+
+  // Allow all Netlify deployments
+  if (origin.match(/^https:\/\/.*\.netlify\.app$/)) {
+    return callback(null, true);
+  }
+
+  // Reject other origins
+  callback(new Error("Not allowed by CORS"));
+};
 
 const io = new Server(httpServer, {
   cors: {
-    origin: process.env.NODE_ENV === 'production' ? allowedOrigins : "*",
+    origin: checkOrigin,
     methods: ["GET", "POST"],
-    credentials: true
+    credentials: true,
   },
 });
 
