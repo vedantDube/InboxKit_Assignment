@@ -26,11 +26,17 @@ const httpServer = createServer(app);
 // Allow both local development and production origins
 const allowedOrigins = process.env.ALLOWED_ORIGINS 
   ? process.env.ALLOWED_ORIGINS.split(',')
-  : ["http://localhost:5173", "http://127.0.0.1:5173"];
+  : [
+      "http://localhost:5173", 
+      "http://127.0.0.1:5173",
+      "https://inboxkit-assignment.onrender.com",
+      "https://inboxkit-assignment.vercel.app",
+      "https://inboxkit-assignment.netlify.app"
+    ];
 
 const io = new Server(httpServer, {
   cors: {
-    origin: allowedOrigins,
+    origin: process.env.NODE_ENV === 'production' ? allowedOrigins : "*",
     methods: ["GET", "POST"],
     credentials: true
   },
