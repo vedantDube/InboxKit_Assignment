@@ -1,0 +1,21 @@
+{
+  "name": "grid-capture-game",
+  "version": "1.0.0",
+  "description": "Real-time multiplayer grid capture game",
+  "scripts": {
+    "install-all": "cd server && npm install && cd ../client && npm install",
+    "dev": "echo 'Open 2 terminals: 1) npm run server  2) npm run client'",
+    "server": "cd server && npm start",
+    "client": "cd client && npm run dev"
+  },
+  "keywords": [
+    "websocket",
+    "real-time",
+    "multiplayer",
+    "game",
+    "react",
+    "socket.io"
+  ],
+  "author": "",
+  "license": "MIT"
+}
